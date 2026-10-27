@@ -17,6 +17,7 @@ GetMeAJob turns an applicant's resumes into an evidence-backed profile, studies 
 ## Contents
 
 - [The problem](#the-problem)
+- [What makes GetMeAJob different?](#what-makes-getmeajob-different)
 - [How it works](#how-it-works)
 - [Features](#features)
 - [Screenshots](#screenshots)
@@ -37,6 +38,26 @@ GetMeAJob turns an applicant's resumes into an evidence-backed profile, studies 
 A serious job application needs job analysis, company research, a tailored resume, a cover letter and answers to screening questions. Generic AI tools speed this up but produce generic, sometimes false, material: invented metrics, skills the applicant doesn't have, inflated titles. Applicants also keep several resumes that describe the same experience differently, and spend time on roles that were never a good fit.
 
 GetMeAJob was designed to produce the strongest *truthful* application possible, and to say "don't apply" when that is the honest answer.
+
+## What makes GetMeAJob different?
+
+Many AI job application tools focus on generating resumes and cover letters. I wanted to design something that addressed the broader challenge: **judging which opportunities are worth pursuing, understanding where an applicant genuinely fits, and creating the strongest possible application without compromising accuracy.**
+
+GetMeAJob was designed around five core principles:
+
+| Common application workflow | GetMeAJob's approach |
+|---|---|
+| **Document first** — Begin by rewriting a resume around a job description. | **Strategy first** — Research the opportunity, evaluate fit, and develop an application strategy before generating documents. |
+| **AI-generated claims** — Generated content can introduce unsupported qualifications, inflated achievements, or invented metrics. | **Evidence-backed content** — Trace claims to the applicant's documented experience, detect unsupported information, and block approval until integrity issues are resolved. |
+| **Keyword-focused optimization** — Emphasize matching keywords from the job posting. | **Multiple perspectives** — Evaluate requirements through recruiter, hiring-manager, and ATS perspectives while maintaining factual accuracy. |
+| **One-off document generation** — Generate a resume or cover letter with limited structured refinement. | **Review and iteration** — Support suggested improvements, user feedback, document versions, and explicit approval before finalization. |
+| **Apply by default** — Treat every potential opportunity as an application to pursue. | **Honest fit assessment** — Identify significant mismatches and recommend not applying when essential requirements cannot be met. |
+
+### The guiding principle
+
+**The goal isn't to make someone appear more qualified than they are. It's to help them present their genuine experience as effectively as possible — and make better decisions about where to apply.**
+
+These are GetMeAJob's design principles and implemented workflows, not claims of independently benchmarked superiority over competing products.
 
 ## How it works
 
