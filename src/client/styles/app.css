@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-400.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-400-italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-500.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-600.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-700.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lora";
+  src: url("/fonts/Lora-Variable.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Lora", ui-serif, Georgia, "Times New Roman", serif;
+  --font-doc: Arial, "Liberation Sans", Helvetica, sans-serif;
+
+  /* Paper and ink */
+  --color-paper: #f3f5f7;
+  --color-surface: #ffffff;
+  --color-ink: #18212f;
+  --color-ink-soft: #2b3546;
+  --color-graphite: #576173;
+  --color-mist: #8a93a3;
+  --color-rule: #dde2e8;
+  --color-rule-strong: #c9d0d9;
+
+  /* Provenance & status */
+  --color-jade: #0b7a5a;
+  --color-jade-strong: #08654a;
+  --color-jade-tint: #e3f4ec;
+  --color-cobalt: #2d5bd0;
+  --color-cobalt-tint: #e8eefc;
+  --color-ochre: #a86b0c;
+  --color-ochre-tint: #fbf1dc;
+  --color-brick: #b4331e;
+  --color-brick-tint: #fbe9e5;
+
+  --radius-panel: 10px;
+  --radius-control: 7px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-cobalt);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: rgb(11 122 90 / 0.18);
+  }
+  input,
+  textarea,
+  select {
+    font-feature-settings: "cv11", "ss01";
+  }
+}
+
+.select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23576173' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Document previews mirror the exported files (Arial/Helvetica, ATS-safe). */
+.doc-page {
+  font-family: var(--font-doc);
+  color: #111827;
+  font-feature-settings: normal;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes gmaj-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(45 91 208 / 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 6px rgb(45 91 208 / 0);
+  }
+}
+.running-dot {
+  animation: gmaj-pulse-ring 1.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  aside,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+}

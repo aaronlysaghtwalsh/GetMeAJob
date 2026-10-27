@@ -1,0 +1,41 @@
+{
+  "name": "getmeajob",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GetMeAJob: an AI career agent that builds evidence-backed, truthful job applications.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "node --disable-warning=ExperimentalWarning dist/server/main.mjs",
+    "test": "node scripts/test.mjs",
+    "test:e2e": "node scripts/test.mjs e2e",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@floating-ui/react": "0.27.20",
+    "@headlessui/react": "2.2.10",
+    "clsx": "2.1.1",
+    "docx": "9.7.1",
+    "jszip": "3.10.1",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.2.108",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-icons": "5.7.0",
+    "tailwind-merge": "3.6.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "esbuild": "0.28.2",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.12",
+    "typescript": "6.0.3"
+  }
+}
