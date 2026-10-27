@@ -128,7 +128,7 @@ More detail, including the data model and security design: [docs/ARCHITECTURE.md
 
 ## My role and Claude's role
 
-**I defined what the product is and the rules it must obey. Claude decided how to build it and built it.** I did not write the code, and I don't present this project as evidence of TypeScript, React or Node.js skills.
+**I defined what the product is and the rules it must obey. Claude decided how to build it and built it.** I conceived GetMeAJob, defined its 34 areas of product requirements, designed its core workflows and evidence-integrity rules, and directed development and testing using Claude. Claude generated the application code, architecture and automated tests. My contribution focused on product design, requirements engineering, validation and AI-assisted development.
 
 | Area | Me (Aaron) | Claude |
 |---|---|---|
