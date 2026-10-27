@@ -2,28 +2,42 @@
 
 **An AI job-application engine that won't make things up.**
 
-GetMeAJob turns an applicant's resumes into an evidence-backed profile, studies each job and employer, says honestly whether the role is worth applying for, and only then drafts a tailored resume, cover letter and application answers. Every claim in those documents must trace back to something the applicant actually did. The applicant approves everything; the app never submits anything on their behalf.
+![GetMeAJob's tailored resume view: the integrity panel shows an unsupported skill removed and an embellished number fixed automatically](docs/screenshots/12-app-resume.png)
 
-> **Status:** working Phase 1 prototype, in development. It runs locally on one computer for one user. It is not a hosted product and has no external users.
->
-> **Who built what:** I (Aaron Lysaght Walsh) designed the product, wrote the requirements and set the rules it must follow. **Claude, Anthropic's AI model, designed the software architecture and wrote the code, tests and technical documentation.** See [My role and Claude's role](#my-role-and-claudes-role).
+*Tailored resume with its integrity panel. "Salesforce" was removed because the applicant has no evidence for it, and an unsupported number was fixed automatically. All screenshots show a fictional applicant ("Jordan Rivera") and employer ("Northwind Analytics"); the AI content in them is pre-written test output, not real AI output.*
 
-![Tailored resume with integrity panel: an unsupported skill is removed and an embellished number is fixed automatically](docs/screenshots/12-app-resume.png)
+GetMeAJob builds job applications the way a careful career coach would: understand the applicant, study the role and employer, decide whether and how to apply, and only then write. Every claim in the resume, cover letter and answers must trace back to something the applicant actually did, and nothing is submitted without their approval.
 
-*All screenshots show a fictional applicant ("Jordan Rivera") and a fictional employer ("Northwind Analytics"). The AI-generated content in them is pre-written test output, not real AI output.*
+## At a glance
+
+| | |
+|---|---|
+| **What it is** | An AI application engine: evidence-backed profile → job and company research → honest fit assessment → strategy → tailored resume, cover letter and answers → review and approval → tracking. |
+| **What's different** | Strategy before documents, evidence-checked claims, and a willingness to say "don't apply". [More ↓](#what-makes-getmeajob-different) |
+| **My role** | Product conception, 34 areas of requirements, workflow design, evidence-integrity rules, and directing AI-assisted development. [More ↓](#my-role-and-claudes-role) |
+| **Claude's role** | Claude (Anthropic's AI model) generated the architecture, application code and automated tests. |
+| **Status** | Working Phase 1 prototype, in development. Runs locally for one user; not a hosted product, no external users. |
+| **Stack** | TypeScript, Node.js, React, SQLite, Zod; Anthropic or OpenAI models |
+
+**Recruiters and hiring managers:** [What makes it different](#what-makes-getmeajob-different) · [Screenshots](#screenshots) · [My role and Claude's role](#my-role-and-claudes-role) · [Limitations](#limitations)
+
+**Developers and technical reviewers:** [Architecture](#architecture) · [Testing](#testing-and-verification) · [Setup](#setup) · [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ---
 
 ## Contents
 
+**Product**
 - [The problem](#the-problem)
 - [What makes GetMeAJob different?](#what-makes-getmeajob-different)
 - [How it works](#how-it-works)
-- [Features](#features)
 - [Screenshots](#screenshots)
-- [Architecture](#architecture)
+- [Features](#features)
 - [My role and Claude's role](#my-role-and-claudes-role)
 - [Development process](#development-process)
+
+**Technical**
+- [Architecture](#architecture)
 - [Testing and verification](#testing-and-verification)
 - [Setup](#setup)
 - [Limitations](#limitations)
@@ -35,7 +49,7 @@ GetMeAJob turns an applicant's resumes into an evidence-backed profile, studies 
 
 ## The problem
 
-A serious job application needs job analysis, company research, a tailored resume, a cover letter and answers to screening questions. Generic AI tools speed this up but produce generic, sometimes false, material: invented metrics, skills the applicant doesn't have, inflated titles. Applicants also keep several resumes that describe the same experience differently, and spend time on roles that were never a good fit.
+A serious job application needs job analysis, company research, a tailored resume, a cover letter and answers to screening questions. AI tools can speed this up, but they can also produce generic or false material: invented metrics, skills the applicant doesn't have, inflated titles. Applicants also keep several resumes that describe the same experience differently, and spend time on roles that were never a good fit.
 
 GetMeAJob was designed to produce the strongest *truthful* application possible, and to say "don't apply" when that is the honest answer.
 
@@ -78,12 +92,23 @@ flowchart LR
   AP --> T[Tracker]
 ```
 
-Four principles shape the design:
+Four design principles:
 
 1. **Strategy before documents.** The resume, cover letter and answers are written from a stored application strategy, not straight from the job description.
 2. **Evidence over prose.** Every fact in the profile keeps the verbatim quote and the document it came from. Prompts refer to evidence by short IDs, and code checks the output against them.
 3. **Deterministic where possible.** Names, titles, employers, dates, scores and ATS checks are computed in code. The model chooses and phrases; code assembles, checks and renders.
 4. **The applicant approves.** Everything is a draft until approved, and submission is recorded by the applicant, never performed by the app.
+
+## Screenshots
+
+Fictional applicant, simulated AI output.
+
+| | |
+|---|---|
+| ![Career Brain profile with evidence items labelled Verified and "2 sources" badges](docs/screenshots/02-career-brain.png) **Career Brain**: every fact is labelled with its provenance; the same internship found in two resumes shows "2 sources". | ![Question card showing two conflicting dates from different resumes](docs/screenshots/04-conflict-question.png) **Conflict question**: two resumes disagree on a date, so the app asks instead of guessing. |
+| ![Company research findings labelled Fact or Interpretation with linked sources](docs/screenshots/09-app-research.png) **Company research**: findings labelled Fact or Interpretation, each with sources. | ![Fit analysis with recruiter, hiring-manager and ATS views and a requirements table](docs/screenshots/10-app-fit.png) **Fit analysis**: recruiter, hiring-manager and ATS views and a requirement-by-requirement table. |
+| ![Application strategy with positioning, emphasis and keyword decisions](docs/screenshots/11-app-strategy.png) **Strategy**: positioning, what to lead with, objections, and keywords that can't honestly be claimed. | ![Dialog asking the applicant to confirm a sensitive answer](docs/screenshots/15-sensitive-answer-confirmation.png) **Sensitive answers** need explicit confirmation before approval. |
+| ![Application overview with fit score and materials](docs/screenshots/07-application-overview.png) **Application overview** with fit score and materials. | ![In-app roadmap with Phase 1 available and Phases 2 to 5 planned](docs/screenshots/21-roadmap.png) **Roadmap**: Phase 1 available, Phases 2–5 planned. |
 
 ## Features
 
@@ -103,16 +128,32 @@ Four principles shape the design:
 | **AI providers** | Anthropic (default), OpenAI, or any OpenAI-compatible endpoint, with a model per role. Every AI call is logged with tokens and estimated cost. |
 | **Privacy** | Encrypted documents and API keys, per-user data isolation, activity log, full ZIP export and account deletion. |
 
-## Screenshots
+## My role and Claude's role
 
-Fictional applicant, simulated AI output.
+I conceived GetMeAJob, defined its 34 areas of product requirements, designed its core workflows and evidence-integrity rules, and directed development and testing using Claude. Claude generated the application code, architecture and automated tests. My contribution focused on product design, requirements engineering, validation and AI-assisted development.
 
-| | |
-|---|---|
-| ![Career Brain](docs/screenshots/02-career-brain.png) **Career Brain**: every fact is labelled with its provenance; the same internship found in two resumes shows "2 sources". | ![Conflict question](docs/screenshots/04-conflict-question.png) **Conflict question**: two resumes disagree on a date, so the app asks instead of guessing. |
-| ![Company research](docs/screenshots/09-app-research.png) **Company research**: findings labelled Fact or Interpretation, each with sources. | ![Fit analysis](docs/screenshots/10-app-fit.png) **Fit analysis**: recruiter, hiring-manager and ATS views and a requirement-by-requirement table. |
-| ![Application strategy](docs/screenshots/11-app-strategy.png) **Strategy**: positioning, what to lead with, objections, and keywords that can't honestly be claimed. | ![Sensitive answer confirmation](docs/screenshots/15-sensitive-answer-confirmation.png) **Sensitive answers** need explicit confirmation before approval. |
-| ![Application overview](docs/screenshots/07-application-overview.png) **Application overview** with fit score and materials. | ![Roadmap](docs/screenshots/21-roadmap.png) **Roadmap**: Phase 1 available, Phases 2–5 planned. |
+| Area | Me (Aaron Lysaght Walsh) | Claude |
+|---|---|---|
+| **Product conception** | Conceived GetMeAJob as an AI career agent rather than a resume builder, framed around getting from a qualified job to an offer. | — |
+| **Requirements engineering** | Wrote the requirements document: 34 requirement areas, the minimum successful product and a five-phase roadmap. | — |
+| **Workflow design** | Designed the core workflow: build an evidence profile first, then research, assess fit and set a strategy before any document is written, with approval gates throughout. | Implemented it as a durable background pipeline with versioned outputs. |
+| **Evidence-integrity rules** | Set the rules: never invent experience, skills, metrics, titles or dates; four provenance categories; human approval of everything; confirmation of sensitive answers; never submit for the applicant; respect site terms; keep ATS optimisation separate from human appeal; say when not to apply. | Turned the rules into enforceable mechanisms: evidence IDs, the validator, the approval gate, guardrails and deterministic rendering. |
+| **Directing AI-assisted development** | Wrote the brief that directed the build, set constraints (multi-user isolation, provider independence, security priorities), and decided priorities and what to publish. | Chose the stack; designed the architecture, data model, pipeline and security; wrote the in-app prompts and schemas. |
+| **Code and tests** | — | Generated all application code and the automated tests. |
+| **Validation** | Ran it on my own job search (October 2026), which exposed an API limit described below, and directed the stabilisation work. | Fixed the test suite and a type error, replaced personal example text with fictional data, and upgraded Zod. |
+| **Documentation** | Requirements and brief; reviewed this README. | Architecture document, change log and README drafts. |
+
+Three files were edited during my first live session on 7 October 2026. No record shows whether I or Claude made those edits, so they are not attributed to either.
+
+## Development process
+
+1. **Specification.** I wrote the product requirements and a standing brief for Claude: the objective, the integrity rule, scope and principles, with an instruction to make technical decisions itself and ask only when a decision needed my input.
+2. **Build.** Claude designed and built Phase 1 against that brief, testing the whole pipeline with a scripted AI provider because no API key was available in its build environment.
+3. **Real use.** On 7–8 October 2026 I ran the app with the Anthropic API on my own resumes: 8 resumes merged into one profile, 40 follow-up answers, and two real applications taken through research, fit, strategy, resume, cover letter and review. The app's own log records 70 successful AI calls (about $5 by its own estimate).
+4. **What broke.** The Anthropic API rejected the largest output schemas with "The compiled grammar is too large". Five tasks were switched to describing the schema in the prompt instead, with the output still validated and retried. That workaround then broke the test suite, which relied on the schema being sent natively.
+5. **Stabilisation (26 October 2026).** Claude fixed the test provider without changing live behaviour, added a regression test that fails if the workaround is removed, fixed a TypeScript error, replaced personal example text with fictional data, and upgraded Zod from 3.25 to 4.6. Details: [docs/CHANGES-2026-10-26.md](docs/CHANGES-2026-10-26.md).
+
+---
 
 ## Architecture
 
@@ -147,32 +188,6 @@ tests/       unit, integration, e2e, fixtures (fictional applicant + scripted AI
 
 More detail, including the data model and security design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## My role and Claude's role
-
-I conceived GetMeAJob, defined its 34 areas of product requirements, designed its core workflows and evidence-integrity rules, and directed development and testing using Claude. Claude generated the application code, architecture and automated tests. My contribution focused on product design, requirements engineering, validation and AI-assisted development.
-
-| Area | Me (Aaron) | Claude |
-|---|---|---|
-| Vision and problem framing | Conceived the product as an AI career agent rather than a resume builder, framed around getting from qualified job to offer. | — |
-| Requirements | Wrote the requirements document: 34 requirement areas, the minimum successful product and a five-phase plan. | — |
-| Product rules | Set the integrity rule (never invent experience, skills, metrics, titles or dates) and the four provenance categories; human approval of everything; confirmation of sensitive answers; never submitting for the applicant; respecting site terms; keeping ATS optimisation separate from human appeal; telling the applicant when not to apply. | Turned these rules into enforceable mechanisms: evidence IDs, the validator, the approval gate, guardrails and deterministic rendering. |
-| Architecture and stack | Set constraints: multi-user isolation, provider independence, security priorities. | Chose the stack; designed the architecture, data model, pipeline and security. |
-| Prompts | Wrote the brief that directed the build. | Wrote the in-app prompts, JSON schemas, and the repair and writing-check logic. |
-| Code and tests | — | Wrote all source code and the automated tests. |
-| Real-world use | Ran it on my own job search (October 2026), which exposed an API limit described below. | — |
-| Maintenance (26 Oct 2026) | Directed the stabilisation work and decided what to publish. | Fixed the test suite and a type error, replaced personal example text with fictional data, upgraded Zod, and prepared this repository and README. |
-| Documentation | Requirements and brief. | Architecture document, change log and this README, reviewed by me. |
-
-Three files were edited during my first live session on 7 October 2026. No record shows whether I or Claude made those edits, so they are not attributed to either.
-
-## Development process
-
-1. **Specification.** I wrote the product requirements and a standing brief for Claude: the objective, the integrity rule, scope and principles, with an instruction to make technical decisions itself and ask only when a decision needed my input.
-2. **Build.** Claude designed and built Phase 1 against that brief, testing the whole pipeline with a scripted AI provider because no API key was available in its build environment.
-3. **Real use.** On 7–8 October 2026 I ran the app with the Anthropic API on my own resumes: 8 resumes merged into one profile, 40 follow-up answers, and two real applications taken through research, fit, strategy, resume, cover letter and review. The app's own log records 70 successful AI calls (about $5 by its own estimate).
-4. **What broke.** The Anthropic API rejected the largest output schemas with "The compiled grammar is too large". Five tasks were switched to describing the schema in the prompt instead, with the output still validated and retried. That workaround then broke the test suite, which relied on the schema being sent natively.
-5. **Stabilisation (26 October 2026).** Claude fixed the test provider without changing live behaviour, added a regression test that fails if the workaround is removed, fixed a TypeScript error, replaced personal example text with fictional data, and upgraded Zod from 3.25 to 4.6. Details: [docs/CHANGES-2026-10-26.md](docs/CHANGES-2026-10-26.md).
-
 ## Testing and verification
 
 Tests never call a real AI provider. `tests/fixtures/scripted.ts` returns fixed responses, including deliberately bad ones (an invented skill, an inflated number) to show that the integrity checks catch them.
@@ -187,7 +202,7 @@ Tests never call a real AI provider. `tests/fixtures/scripted.ts` returns fixed 
 
 The tests cover CSRF protection, security headers and malformed URLs; sign-up; building the Career Brain from two resumes; resolving a conflict; preferences and readiness; the full pipeline from a pasted job; DOCX and PDF downloads; accepting a review suggestion; an invented number in a user edit blocking approval; the submission gate; the sponsorship "do not apply" guardrail; isolation between users; export and account deletion; the live-API schema workaround; and quote matching, number extraction and invented-metric detection.
 
-**What has not been tested:** the quality of real AI output, and the live API with the upgraded Zod version.
+**What has not been tested:** the quality of real AI output, and compatibility with the live API since the Zod 4 upgrade.
 
 ## Setup
 
